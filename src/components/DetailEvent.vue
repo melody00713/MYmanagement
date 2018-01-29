@@ -6,7 +6,7 @@
         <Icon type="ios-information-outline" class="timeline-icon" slot="dot"></Icon>
         <p class="time">{{item.createtime | timer('second')}}</p>
         <p class="date">{{item.createtime | timer('day')}}</p>
-        <p class="content">{{(item.username ? `用户"${item.username}"` : '') + item.operator}}</p>
+        <p class="content">{{(item.username ? `用户：${item.username}&nbsp;&nbsp;&nbsp;&nbsp;` : '') + (item.terminalname ? `终端：${item.terminalname}&nbsp;&nbsp;&nbsp;&nbsp;` : '') + (item.vmname ? `桌面：${item.vmname}&nbsp;&nbsp;&nbsp;&nbsp;` : '') + (item.operator ? `操作：${item.operator}` : '')}}</p>
       </TimelineItem>
       <TimelineItem v-show="data.searchCount > data.start + data.pageSize"><a @click="nextPageHandler">查看更多</a></TimelineItem>
       <TimelineItem>
