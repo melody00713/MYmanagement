@@ -3,7 +3,7 @@
     <Layout>
       <Header class="layout-header">
         <Row>
-          <Col span="12">
+          <Col span="20">
           <img class="layout-header-logo" src="../assets/images/logo.png" alt="">
           <span class="layout-header-copname">EASTED</span>
           <span class="layout-header-proname">云桌面</span>
@@ -22,7 +22,7 @@
             </MenuItem>
           </Menu>
           </Col>
-          <Col span="12" style="text-align: right">
+          <Col span="4" style="text-align: right">
           <Dropdown placement="bottom-end" @on-click="logoutHandler">
             <a href="javascript:void(0)">
               <img class="layout-header-avatar" src="../assets/images/avatar.png" alt="">

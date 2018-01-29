@@ -21,7 +21,7 @@ export default {
         order: 'asc',
         start: 0,
         status: '',
-        pageSize: 5,
+        pageSize: 10,
         all: '',
         page: 1
       },

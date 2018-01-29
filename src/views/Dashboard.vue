@@ -10,7 +10,7 @@
         </Col>
         <Col span="16">
           <p class="card-title">终端设备 <router-link to="/terminal">更多</router-link></p>
-          <div class="card-chart-warpper" ref="terChartWarpper">
+          <div class="card-chart-warpper scroll" ref="terChartWarpper">
             <EfTable :total="terTotal" :loading="terLoading" simple :columns="terColumns" :data="terData" :info="terTableInfo" @tableInfoChange="tableInfoChangeHandler('Terminal')"/>
           </div>
         </Col>
@@ -26,7 +26,7 @@
         </Col>
         <Col span="16">
           <p class="card-title">桌面列表 <router-link to="/desktop">更多</router-link></p>
-          <div class="card-chart-warpper">
+          <div class="card-chart-warpper scroll">
             <EfTable :total="vmTotal" :loading="vmLoading" simple :columns="vmColumns" :data="vmData" :info="vmTableInfo" @tableInfoChange="tableInfoChangeHandler('Desktop')"/>
           </div>
         </Col>
@@ -73,7 +73,7 @@ export default {
           render: (h, params) => {
             return h('router-link', {
               props: {
-                to: `/terminal/${params.row.id}`
+                to: `/terminal/detail/${params.row.id}`
               }
             }, params.row.name)
           }
@@ -147,7 +147,7 @@ export default {
           render: (h, params) => {
             return h('router-link', {
               props: {
-                to: `/desktop/${params.row.id}`
+                to: `/desktop/detail/${params.row.id}`
               }
             }, params.row.name)
           }
@@ -286,6 +286,9 @@ export default {
     }
     .card-chart-warpper {
       height: calc(~'100% - 60px');
+      &.scroll{
+        overflow-y: auto;
+      }
     }
   }
   .dashboard-card + .dashboard-card {

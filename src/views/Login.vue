@@ -5,10 +5,10 @@
              class="login-container" @keyup.enter.native.prevent="handleSubmit2">
       <img src="../assets/images/LoginLogo.png" class="login-container-img">
       <FormItem prop="username">
-        <Input class="login-input" size="large" type="text" v-model="loginForm.username" auto-complete="off" placeholder="用户名" />
+        <Input class="login-input" size="large" type="text" v-model="loginForm.username" autocomplete="off" placeholder="用户名" />
       </FormItem>
       <FormItem prop="password">
-        <Input class="login-input" size="large" type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码" />
+        <Input class="login-input" size="large" type="password" v-model="loginForm.password" autocomplete="off" placeholder="密码" />
       </FormItem>
       <FormItem style="width:100%">
         <Button size="large" type="primary" class="login-btn" @click.native.prevent="handleSubmit2" :loading="logining">登录

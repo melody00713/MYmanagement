@@ -1,7 +1,7 @@
 <template>
   <div class="page-terminal">
     <efPageMainLayout :title="title">
-      <EfTable :total="total" :columns="columns" :data="data" :info="tableInfo" @tableInfoChange="tableInfoChangeHandler">
+      <EfTable :total="total" :loading="loading" :columns="columns" :data="data" :info="tableInfo" @tableInfoChange="tableInfoChangeHandler">
         <Button type="ghost" class="table-operation-btn" @click="exportHandler">导出</Button>
       </EfTable>
     </efPageMainLayout>
@@ -18,11 +18,12 @@
     data () {
       return {
         title: '日志',
+        loading: false,
         tableInfo: {
           orderName: 'createtime',
           order: 'asc',
           start: 0,
-          pageSize: 5,
+          pageSize: 10,
           all: '',
           page: 1,
         },
@@ -95,7 +96,7 @@
     },
     mounted: function() {
       this.$nextTick(() => {
-        this.getDataHandler(true)
+        this.getDataHandler()
       })
     }
   }
