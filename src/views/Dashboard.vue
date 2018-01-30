@@ -11,7 +11,7 @@
         <Col span="16">
           <p class="card-title">终端设备 <router-link to="/terminal">更多</router-link></p>
           <div class="card-chart-warpper scroll" ref="terChartWarpper">
-            <EfTable :total="terTotal" :loading="terLoading" simple :columns="terColumns" :data="terData" :info="terTableInfo" @tableInfoChange="tableInfoChangeHandler('Terminal')"/>
+            <EfTable :height="tableMaxHeight" :total="terTotal" :loading="terLoading" simple :columns="terColumns" :data="terData" :info="terTableInfo" @tableInfoChange="tableInfoChangeHandler('Terminal')"/>
           </div>
         </Col>
       </Row>
@@ -27,7 +27,7 @@
         <Col span="16">
           <p class="card-title">桌面列表 <router-link to="/desktop">更多</router-link></p>
           <div class="card-chart-warpper scroll">
-            <EfTable :total="vmTotal" :loading="vmLoading" simple :columns="vmColumns" :data="vmData" :info="vmTableInfo" @tableInfoChange="tableInfoChangeHandler('Desktop')"/>
+            <EfTable :height="tableMaxHeight" :total="vmTotal" :loading="vmLoading" simple :columns="vmColumns" :data="vmData" :info="vmTableInfo" @tableInfoChange="tableInfoChangeHandler('Desktop')"/>
           </div>
         </Col>
       </Row>
@@ -204,7 +204,8 @@ export default {
       vmLoading: false,
       terTotal: 0,
       vmTotal: 0,
-      chartHeight: 200
+      chartHeight: 200,
+      tableMaxHeight: 200
     }
   },
   components: {
@@ -214,7 +215,13 @@ export default {
   methods: {
     getDataHandler(loop) {
       this.chartHeight = this.$refs.terChartWarpper.offsetHeight
-      this.terTableInfo.pageSize = this.vmTableInfo.pageSize = Math.floor((this.$refs.terChartWarpper.offsetHeight - 106) / 50) > 0 ? Math.floor((this.$refs.terChartWarpper.offsetHeight - 106) / 50) : 1
+      const TableCel = Math.floor((this.$refs.terChartWarpper.offsetHeight - 106) / 50)
+      if (TableCel > 0) {
+        this.terTableInfo.pageSize = this.vmTableInfo.pageSize = TableCel
+        this.tableMaxHeight = this.$refs.terChartWarpper.offsetHeight - 106
+      } else {
+        this.terTableInfo.pageSize = this.vmTableInfo.pageSize = 1
+      }
       this.getChartData()
       if(loop) {
         this.getTerminalData(loop)
@@ -286,9 +293,9 @@ export default {
     }
     .card-chart-warpper {
       height: calc(~'100% - 60px');
-      &.scroll{
-        overflow-y: auto;
-      }
+      /*&.scroll{*/
+        /*overflow-y: auto;*/
+      /*}*/
     }
   }
   .dashboard-card + .dashboard-card {

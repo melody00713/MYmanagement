@@ -38,7 +38,7 @@
       </Header>
       <Content>
         <transition>
-          <keep-alive :include="['Terminal', 'Desktop', 'Log', 'Dashboard']">
+          <keep-alive :include="includedComponents">
             <router-view ref="container"/>
           </keep-alive>
         </transition>
@@ -49,11 +49,13 @@
 
 <script>
 import API from '../api/api'
+import router from '../router'
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      username: localStorage.user
+      username: localStorage.user,
+      includedComponents: [],
     }
   },
   methods: {
@@ -63,17 +65,29 @@ export default {
       })
     }
   },
+  beforeMount() {
+    this.includedComponents[0] = (this.$route.path.substring(1, 2).toUpperCase() + this.$route.path.substring(2))
+  },
   mounted() {
     this.$nextTick(_ => {
       var time = null
       if (!time) {
         time = setInterval(() => {
-          if (this.$refs.container) {
+          if (this.$refs.container && this.$refs.container.getDataHandler) {
             this.$refs.container.getDataHandler(true)
           }
         }, 10000)
       }
     })
+  },
+  beforeUpdate () {
+    this.includedComponents[0] = (this.$route.path.substring(1, 2).toUpperCase() + this.$route.path.substring(2))
+  },
+  beforeRouteUpdate (to, from, next) {
+    if(to.path.indexOf('detail') === -1 && from.path.indexOf('detail') === -1) {
+      this.includedComponents = []
+    }
+    next()
   }
 }
 </script>

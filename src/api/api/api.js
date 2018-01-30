@@ -119,14 +119,22 @@ export const logExport = params => {
     responseType: 'blob'
   }).then(res => {
     if (res.data) {
-      let blob = res.data
-      let a = document.createElement('a')
-      let url = window.URL.createObjectURL(blob)
-      let filename = decodeURI(res.headers['content-disposition'].split('filename=')[1].split('.')[0])
-      a.href = url
-      a.download = filename
-      a.click()
-      window.URL.revokeObjectURL(url)
+      if ('msSaveBlob' in navigator) {
+        window.navigator.msSaveBlob(res.data, decodeURI(res.headers['content-disposition'].split('filename=')[1]))
+      } else {
+        let blob = res.data
+        let a = document.getElementById('exportLog')
+        let url = window.URL.createObjectURL(blob)
+        let filename = decodeURI(res.headers['content-disposition'].split('filename=')[1])
+        var evt = document.createEvent('HTMLEvents')
+        evt.initEvent('click', false, false)
+        a.href = url
+        console.log(filename)
+        a.download = filename
+        a.dispatchEvent(evt)
+        a.click()
+        window.URL.revokeObjectURL(url)
+      }
     }
   })
 }

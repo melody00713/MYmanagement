@@ -24,6 +24,7 @@
       <Table
         :loading="loading"
         stripe
+        :height="height"
         :columns="columns"
         :data="data"
         @on-sort-change="tableSortChangeHandler"
@@ -46,6 +47,7 @@ export default {
     columns: Array,
     data: Array,
     info: Object,
+    height: Number,
     loading: Boolean,
     total: Number,
     simple: {

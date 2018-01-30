@@ -41,6 +41,7 @@
     },
     methods: {
       handleSubmit2 (ev) {
+        console.log(this.loginForm)
         this.$refs.loginForm.validate((valid) => {
           if (valid) {
             this.logining = true

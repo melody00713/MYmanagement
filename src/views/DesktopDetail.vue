@@ -1,5 +1,5 @@
 <template>
-  <div class="page-terminal" :loading="loading">
+  <div class="page-terminal">
     <efPageDetailLayout :data="data">
       <div slot="info">
         <efDetailInfo type="desktop" :data="data"/>

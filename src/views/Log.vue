@@ -3,6 +3,7 @@
     <efPageMainLayout :title="title">
       <EfTable :total="total" :loading="loading" :columns="columns" :data="data" :info="tableInfo" @tableInfoChange="tableInfoChangeHandler">
         <Button type="ghost" class="table-operation-btn" @click="exportHandler">导出</Button>
+        <a id="exportLog"></a>
       </EfTable>
     </efPageMainLayout>
   </div>
@@ -107,5 +108,8 @@
   .table-operation-btn {
     border: 1px solid #3D70B2;
     color: #3D70B2;
+  }
+  #exportLog {
+    display: none;
   }
 </style>

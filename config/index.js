@@ -42,7 +42,7 @@ module.exports = {
     cssSourceMap: true,
     proxyTable: {
       '/edm': {
-        target: 'http://10.10.104.3:8080/',
+        target: 'http://10.10.104.121:8080/',
         changeOrigin: true,
         pathRewrite: {
           '^/edm': '/monitor'
