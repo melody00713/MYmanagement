@@ -31,6 +31,9 @@
   font-size: 14px;
   color: #4A4A4A;
 }
+.ivu-table-body {
+  overflow-x: hidden;
+}
 .ivu-table table {
   width: 100% !important;
 }
@@ -72,5 +75,16 @@
 }
 .login-input input{
   height: 42px;
+}
+
+.ivu-table-cell-ellipsis .ivu-tooltip, .ivu-table-cell-ellipsis .ivu-tooltip-rel{
+  width: 100%;
+}
+
+.ivu-table-cell-ellipsis .ivu-tooltip-rel >*{
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 

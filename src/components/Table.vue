@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="table-tool" v-if="!simple">
-      <Form ref="infoForm" :model="info" inline style="display: inline-block">
+      <Form ref="infoForm" :model="info" inline style="display: inline-block" @submit.native.prevent>
         <FormItem>
           <Select v-model="info.pageSize" style="width: 60px;">
             <Option v-for="item in pageLength" :value="item" :key="item">{{ item }}</Option>
@@ -13,7 +13,7 @@
           <span class="table-info">共 {{total}} 条数据</span>
         </FormItem>
         <FormItem>
-          <Input type="text" v-model="info.all" icon="ios-search-strong" placeholder="请输入搜索内容" />
+          <Input type="text" v-model="info.all" icon="ios-search-strong" placeholder="请输入搜索内容"/>
         </FormItem>
       </Form>
       <div class="table-operations">
@@ -53,6 +53,10 @@ export default {
     simple: {
       type: Boolean,
       default: false
+    },
+    log: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -74,7 +78,11 @@ export default {
       this.info.start = (page - 1) * this.info.pageSize
     },
     tableSortChangeHandler(column) {
-      column.order = column.order !== 'normal' ? column.order : 'asc'
+      if (column.order === 'normal') {
+        this.info.orderName = this.log ? 'createtime' : 'status'
+        this.info.order= 'desc'
+        return
+      }
       this.info.orderName = column.key
       this.info.order= column.order
     }
@@ -100,6 +108,7 @@ export default {
   .table-warpper {
     border: 1px solid #CECECE;
     background: #ffffff;
+    box-sizing: border-box;
   }
   .ivu-form-inline .ivu-form-item {
     margin-bottom: 0;

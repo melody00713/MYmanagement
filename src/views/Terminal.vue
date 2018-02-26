@@ -17,8 +17,8 @@ export default {
       title: '终端',
       loading: false,
       tableInfo: {
-        orderName: 'name',
-        order: 'asc',
+        orderName: 'status',
+        order: 'desc',
         start: 0,
         status: '',
         pageSize: 10,
@@ -34,11 +34,19 @@ export default {
           sortable: 'custom',
           ellipsis: true,
           render: (h, params) => {
-            return h('router-link', {
+            const value = params.row.name
+            return h('Tooltip', {
               props: {
-                to: `/terminal/detail/${params.row.id}`
+                placement: 'top-start',
+                content: value
               }
-            }, params.row.name)
+            }, [
+              h('router-link', {
+                props: {
+                  to: `/terminal/detail/${params.row.id}`
+                }
+              }, value)
+            ]);
           }
         },
         {
@@ -46,15 +54,31 @@ export default {
           key: 'department',
           ellipsis: true,
           render: (h, params) => {
-            return h('span', params.row.department || '-')
+            const value = params.row.department || '-';
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span', value)
+            ]);
           }
         },
         {
           title: '用户',
-          key: 'lastloginuser',
+          key: 'activeuser',
           ellipsis: true,
           render: (h, params) => {
-            return h('span', params.row.lastloginuser || '-')
+            const value = params.row.activeuser || '-'
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span', value)
+            ]);
           }
         },
         {
@@ -62,13 +86,20 @@ export default {
           key: 'onlinetime',
           ellipsis: true,
           render: (h, params) => {
-            return h('span', params.row.status === 'Up' && this.Common.calcOnlineTime(params.row.laststarttime) || '-')
+            const value = params.row.status === 'Up' && this.Common.calcOnlineTime(params.row.laststarttime) || '-'
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span', value)
+            ]);
           }
         },
         {
           title: '状态',
           key: 'status',
-          ellipsis: true,
           filters: [
             {
               label: '运行',
@@ -86,15 +117,23 @@ export default {
             this.tableInfo.start = 0
           },
           render: (h, params) => {
-            return h('span',
-              [
-                h('i', {
-                  attrs: {
-                    class: `icon-status ${params.row.status}`
-                  }
-                }),
-                h('span', this.Common.statusCN(params.row.status))
-              ])
+            const value = this.Common.statusCN(params.row.status)
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span',
+                [
+                  h('i', {
+                    attrs: {
+                      class: `icon-status ${params.row.status}`
+                    }
+                  }),
+                  h('span', value)
+                ])
+            ]);
           }
         }
       ]

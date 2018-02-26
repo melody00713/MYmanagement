@@ -1,7 +1,7 @@
 <template>
   <div class="page-terminal">
     <efPageMainLayout :title="title">
-      <EfTable :total="total" :loading="loading" :columns="columns" :data="data" :info="tableInfo" @tableInfoChange="tableInfoChangeHandler">
+      <EfTable :log="true" :total="total" :loading="loading" :columns="columns" :data="data" :info="tableInfo" @tableInfoChange="tableInfoChangeHandler">
         <Button type="ghost" class="table-operation-btn" @click="exportHandler">导出</Button>
         <a id="exportLog"></a>
       </EfTable>
@@ -22,7 +22,7 @@
         loading: false,
         tableInfo: {
           orderName: 'createtime',
-          order: 'asc',
+          order: 'desc',
           start: 0,
           pageSize: 10,
           all: '',
@@ -34,39 +34,85 @@
           {
             title: '时间',
             key: 'createtime',
-            ellipsis: true
+            ellipsis: true,
+            render: (h, params) => {
+              const value = params.row.createtime || '-'
+              return h('Tooltip', {
+                props: {
+                  placement: 'top-start',
+                  content: value
+                }
+              }, [
+                h('span', value)
+              ]);
+            }
           },
           {
             title: '用户',
             key: 'username',
-            sortable: true,
+            sortable: 'custom',
             ellipsis: true,
             render: (h, params) => {
-              return h('span', params.row.username || '-')
+              const value = params.row.username || '-'
+              return h('Tooltip', {
+                props: {
+                  placement: 'top-start',
+                  content: value
+                }
+              }, [
+                h('span', value)
+              ]);
             }
           },
           {
             title: '终端',
             key: 'terminalname',
-            sortable: true,
+            sortable: 'custom',
             ellipsis: true,
             render: (h, params) => {
-              return h('span', params.row.terminalname || '-')
+              const value = params.row.terminalname || '-'
+              return h('Tooltip', {
+                props: {
+                  placement: 'top-start',
+                  content: value
+                }
+              }, [
+                h('span', value)
+              ]);
             }
           },
           {
             title: '桌面',
             key: 'vmname',
-            sortable: true,
+            sortable: 'custom',
             ellipsis: true,
             render: (h, params) => {
-              return h('span', params.row.vmname || '-')
+              const value = params.row.vmname || '-'
+              return h('Tooltip', {
+                props: {
+                  placement: 'top-start',
+                  content: value
+                }
+              }, [
+                h('span', value)
+              ]);
             }
           },
           {
             title: '操作',
             key: 'operator',
-            ellipsis: true
+            ellipsis: true,
+            render: (h, params) => {
+              const value = params.row.operator || '-'
+              return h('Tooltip', {
+                props: {
+                  placement: 'top-start',
+                  content: value
+                }
+              }, [
+                h('span', value)
+              ]);
+            }
           }
         ]
       }

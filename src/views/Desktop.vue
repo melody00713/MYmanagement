@@ -17,8 +17,8 @@
         title: '桌面',
         loading: false,
         tableInfo: {
-          orderName: 'name',
-          order: 'asc',
+          orderName: 'status',
+          order: 'desc',
           start: 0,
           pageSize: 10,
           status: '',
@@ -31,14 +31,21 @@
           {
             title: '虚拟机',
             key: 'name',
-            sortable: true,
+            sortable: 'custom',
             ellipsis: true,
             render: (h, params) => {
-              return h('router-link', {
+              return h('Tooltip', {
                 props: {
-                  to: `/desktop/detail/${params.row.id}`
+                  placement: 'top-start',
+                  content: params.row.name
                 }
-              }, params.row.name)
+              }, [
+                h('router-link', {
+                  props: {
+                    to: `/desktop/detail/${params.row.id}`
+                  }
+                }, params.row.name)
+              ]);
             }
           },
           {
@@ -46,7 +53,15 @@
             key: 'currentuser',
             ellipsis: true,
             render: (h, params) => {
-              return h('span', params.row.currentuser || '-')
+              const value = params.row.currentuser || '-'
+              return h('Tooltip', {
+                props: {
+                  placement: 'top-start',
+                  content: value
+                }
+              }, [
+                h('span', value)
+              ]);
             }
           },
           {
@@ -54,13 +69,20 @@
             key: 'onlinetime',
             ellipsis: true,
             render: (h, params) => {
-              return h('span', params.row.status === 'Up' && this.Common.calcOnlineTime(params.row.laststarttime) || '-')
+              const value = params.row.status === 'Up' && this.Common.calcOnlineTime(params.row.laststarttime) || '-'
+              return h('Tooltip', {
+                props: {
+                  placement: 'top-start',
+                  content: value
+                }
+              }, [
+                h('span', value)
+              ]);
             }
           },
           {
             title: '状态',
             key: 'status',
-            ellipsis: true,
             filters: [
               {
                 label: '运行',
@@ -78,15 +100,23 @@
               this.tableInfo.start = 0
             },
             render: (h, params) => {
-              return h('span',
-                [
-                  h('i', {
-                    attrs: {
-                      class: `icon-status ${params.row.status}`
-                    }
-                  }),
-                  h('span', this.Common.statusCN(params.row.status))
-                ])
+              const value = this.Common.statusCN(params.row.status)
+              return h('Tooltip', {
+                props: {
+                  placement: 'top-start',
+                  content: value
+                }
+              }, [
+                h('span',
+                  [
+                    h('i', {
+                      attrs: {
+                        class: `icon-status ${params.row.status}`
+                      }
+                    }),
+                    h('span', value)
+                  ])
+              ]);
             }
           }
         ]

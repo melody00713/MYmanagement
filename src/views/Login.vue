@@ -41,10 +41,10 @@
     },
     methods: {
       handleSubmit2 (ev) {
-        console.log(this.loginForm)
         this.$refs.loginForm.validate((valid) => {
           if (valid) {
             this.logining = true
+            this.$router.push({path: '/dashboard'})
             API.Login(this.loginForm).then(res => {
               this.logining = false
               localStorage.clear()

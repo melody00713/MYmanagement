@@ -11,7 +11,7 @@
         <Col span="16">
           <p class="card-title">终端设备 <router-link to="/terminal">更多</router-link></p>
           <div class="card-chart-warpper scroll" ref="terChartWarpper">
-            <EfTable :height="tableMaxHeight" :total="terTotal" :loading="terLoading" simple :columns="terColumns" :data="terData" :info="terTableInfo" @tableInfoChange="tableInfoChangeHandler('Terminal')"/>
+            <EfTable :height="terData.length === 0 ? 0 : tableMaxHeight" :total="terTotal" :loading="terLoading" simple :columns="terColumns" :data="terData" :info="terTableInfo" @tableInfoChange="tableInfoChangeHandler('Terminal')"/>
           </div>
         </Col>
       </Row>
@@ -27,7 +27,7 @@
         <Col span="16">
           <p class="card-title">桌面列表 <router-link to="/desktop">更多</router-link></p>
           <div class="card-chart-warpper scroll">
-            <EfTable :height="tableMaxHeight" :total="vmTotal" :loading="vmLoading" simple :columns="vmColumns" :data="vmData" :info="vmTableInfo" @tableInfoChange="tableInfoChangeHandler('Desktop')"/>
+            <EfTable :height="vmData.length === 0 ? 0 : tableMaxHeight" :total="vmTotal" :loading="vmLoading" simple :columns="vmColumns" :data="vmData" :info="vmTableInfo" @tableInfoChange="tableInfoChangeHandler('Desktop')"/>
           </div>
         </Col>
       </Row>
@@ -54,8 +54,8 @@ export default {
         }
       },
       terTableInfo: {
-        orderName: 'name',
-        order: 'asc',
+        orderName: 'status',
+        order: 'desc',
         start: 0,
         pageSize: 0,
         status: '',
@@ -71,19 +71,51 @@ export default {
           sortable: 'custom',
           ellipsis: true,
           render: (h, params) => {
-            return h('router-link', {
+            const value = params.row.name
+            return h('Tooltip', {
               props: {
-                to: `/terminal/detail/${params.row.id}`
+                placement: 'top-start',
+                content: value
               }
-            }, params.row.name)
+            }, [
+              h('router-link', {
+                props: {
+                  to: `/terminal/detail/${params.row.id}`
+                }
+              }, value)
+            ]);
+          }
+        },
+        {
+          title: '部门',
+          key: 'department',
+          ellipsis: true,
+          render: (h, params) => {
+            const value = params.row.department || '-';
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span', value)
+            ]);
           }
         },
         {
           title: '用户',
-          key: 'lastloginuser',
+          key: 'activeuser',
           ellipsis: true,
           render: (h, params) => {
-            return h('span', params.row.lastloginuser || '-')
+            const value = params.row.activeuser || '-'
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span', value)
+            ]);
           }
         },
         {
@@ -91,13 +123,20 @@ export default {
           key: 'onlinetime',
           ellipsis: true,
           render: (h, params) => {
-            return h('span', params.row.status === 'Up' && this.Common.calcOnlineTime(params.row.laststarttime) || '-')
+            const value = params.row.status === 'Up' && this.Common.calcOnlineTime(params.row.laststarttime) || '-'
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span', value)
+            ]);
           }
         },
         {
           title: '状态',
           key: 'status',
-          ellipsis: true,
           filters: [
             {
               label: '运行',
@@ -115,21 +154,29 @@ export default {
             this.terTableInfo.start = 0
           },
           render: (h, params) => {
-            return h('span',
-              [
-                h('i', {
-                  attrs: {
-                    class: `icon-status ${params.row.status}`
-                  }
-                }),
-                h('span', this.Common.statusCN(params.row.status))
-              ])
+            const value = this.Common.statusCN(params.row.status)
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span',
+                [
+                  h('i', {
+                    attrs: {
+                      class: `icon-status ${params.row.status}`
+                    }
+                  }),
+                  h('span', value)
+                ])
+            ]);
           }
         }
       ],
       vmTableInfo: {
-        orderName: 'name',
-        order: 'asc',
+        orderName: 'status',
+        order: 'desc',
         start: 0,
         pageSize: 0,
         status: '',
@@ -142,22 +189,37 @@ export default {
         {
           title: '虚拟机',
           key: 'name',
-          sortable: true,
+          sortable: 'custom',
           ellipsis: true,
           render: (h, params) => {
-            return h('router-link', {
+            return h('Tooltip', {
               props: {
-                to: `/desktop/detail/${params.row.id}`
+                placement: 'top-start',
+                content: params.row.name
               }
-            }, params.row.name)
+            }, [
+              h('router-link', {
+                props: {
+                  to: `/desktop/detail/${params.row.id}`
+                }
+              }, params.row.name)
+            ]);
           }
         },
         {
           title: '用户',
-          key: 'age',
+          key: 'currentuser',
           ellipsis: true,
           render: (h, params) => {
-            return h('span', params.row.lastloginuser || '-')
+            const value = params.row.currentuser || '-'
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span', value)
+            ]);
           }
         },
         {
@@ -165,7 +227,15 @@ export default {
           key: 'onlinetime',
           ellipsis: true,
           render: (h, params) => {
-            return h('span', params.row.status === 'Up' && this.Common.calcOnlineTime(params.row.laststarttime) || '-')
+            const value = params.row.status === 'Up' && this.Common.calcOnlineTime(params.row.laststarttime) || '-'
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span', value)
+            ]);
           }
         },
         {
@@ -188,15 +258,23 @@ export default {
             this.vmTableInfo.start = 0
           },
           render: (h, params) => {
-            return h('span',
-              [
-                h('i', {
-                  attrs: {
-                    class: `icon-status ${params.row.status}`
-                  }
-                }),
-                h('span', this.Common.statusCN(params.row.status))
-              ])
+            const value = this.Common.statusCN(params.row.status)
+            return h('Tooltip', {
+              props: {
+                placement: 'top-start',
+                content: value
+              }
+            }, [
+              h('span',
+                [
+                  h('i', {
+                    attrs: {
+                      class: `icon-status ${params.row.status}`
+                    }
+                  }),
+                  h('span', value)
+                ])
+            ]);
           }
         }
       ],
@@ -216,9 +294,9 @@ export default {
     getDataHandler(loop) {
       this.chartHeight = this.$refs.terChartWarpper.offsetHeight
       const TableCel = Math.floor((this.$refs.terChartWarpper.offsetHeight - 106) / 50)
+      this.tableMaxHeight = this.$refs.terChartWarpper.offsetHeight - 57 > 100 ? this.$refs.terChartWarpper.offsetHeight - 57: 100
       if (TableCel > 0) {
         this.terTableInfo.pageSize = this.vmTableInfo.pageSize = TableCel
-        this.tableMaxHeight = this.$refs.terChartWarpper.offsetHeight - 106
       } else {
         this.terTableInfo.pageSize = this.vmTableInfo.pageSize = 1
       }
@@ -293,9 +371,10 @@ export default {
     }
     .card-chart-warpper {
       height: calc(~'100% - 60px');
-      /*&.scroll{*/
-        /*overflow-y: auto;*/
-      /*}*/
+      &.scroll{
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
     }
   }
   .dashboard-card + .dashboard-card {

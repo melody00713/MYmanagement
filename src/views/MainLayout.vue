@@ -25,7 +25,8 @@
           <Col span="4" style="text-align: right">
           <Dropdown placement="bottom-end" @on-click="logoutHandler">
             <a href="javascript:void(0)">
-              <img class="layout-header-avatar" src="../assets/images/avatar.png" alt="">
+              <Icon type="person" class="layout-header-avatar"/>
+              <!--<img class="layout-header-avatar" src="../assets/images/avatar.png" alt="">-->
               {{username}}
               <Icon type="arrow-down-b"></Icon>
             </a>
@@ -54,7 +55,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      username: localStorage.user,
+      username: localStorage.getItem('user'),
       includedComponents: [],
     }
   },
@@ -138,8 +139,10 @@ export default {
     }
     .layout-header-avatar {
       margin-right: 5px;
+      font-size: 16px;
+      vertical-align: baseline;
     }
-    .layout-header-logo, .layout-header-proname, .layout-header-copname, .layout-header-avatar {
+    .layout-header-logo, .layout-header-proname, .layout-header-copname {
       vertical-align: middle;
     }
     .ivu-dropdown a {
